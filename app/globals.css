@@ -1,4 +1,4 @@
-* {
+/* * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
@@ -24,8 +24,8 @@ h1 {
 }
 
 button,
-input[type='submit'],
-input[type='reset'] {
+input[type="submit"],
+input[type="reset"] {
   background: none;
   color: inherit;
   border: none;
@@ -35,7 +35,7 @@ input[type='reset'] {
   outline: inherit;
 }
 
-input[type='file']::file-selector-button {
+input[type="file"]::file-selector-button {
   background-color: #fff;
   border: 1px solid #000000;
   padding: 0.625rem;
@@ -65,4 +65,4 @@ input {
 form {
   display: flex;
   flex-direction: column;
-}
+} */
