@@ -3,6 +3,7 @@
 import Head from "next/head"
 import Image from "next/image"
 import Link from "next/link"
+import { useEffect, useState } from "react"
 
 export default function Home() {
   return (
@@ -28,30 +29,48 @@ export default function Home() {
 }
 
 const PhotosList = () => {
-  const urls = [
-    "https://cdn.statcdn.com/Infographic/images/normal/18819.jpeg",
-    "https://cdn.statcdn.com/Infographic/images/normal/18819.jpeg",
-    "https://cdn.statcdn.com/Infographic/images/normal/18819.jpeg",
-    "https://cdn.statcdn.com/Infographic/images/normal/18819.jpeg",
-    "https://cdn.statcdn.com/Infographic/images/normal/18819.jpeg",
-    "https://cdn.statcdn.com/Infographic/images/normal/18819.jpeg",
-    "https://cdn.statcdn.com/Infographic/images/normal/18819.jpeg",
-  ]
+  const [urls, setUrls] = useState<string[]>([])
+
+  const [isLoading, setIsLoading] = useState(true)
+
+  const fetchPhotos = async () => {
+    const ress = await fetch(process.env.NEXT_PUBLIC_BASE_URL + "/api/upload", {
+      method: "GET",
+    })
+
+    if (ress.ok) {
+      const data = await ress.json()
+      setUrls(data)
+    }
+
+    setIsLoading(false)
+  }
+
+  useEffect(() => {
+    fetchPhotos()
+  })
+
   return (
     <>
-      <ul>
-        {urls.map((url) => (
-          <li key={url}>
-            <Image
-              loader={() => url}
-              src={url}
-              alt="photo"
-              width={500}
-              height={500}
-            />
-          </li>
-        ))}
-      </ul>
+      {isLoading && <p>Loading...</p>}
+      {!isLoading && urls.length === 0 && <p>No photos found.</p>}
+      {!isLoading && urls.length > 0 && (
+        <>
+          <ul>
+            {urls.map((url) => (
+              <li key={url}>
+                <Image
+                  loader={() => url}
+                  src={url}
+                  alt="photo"
+                  width={500}
+                  height={500}
+                />
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
     </>
   )
 }
